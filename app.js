@@ -83,6 +83,7 @@ renderBoxes = () => {
 	const precSpan = document.createElement("span");
 	const windSpan = document.createElement("span");
 	const spanArray = [tempSpan, humiditySpan, precSpan, windSpan];
+
 	spanArray.forEach((span) => {
 		span.className = "resultText";
 	});
