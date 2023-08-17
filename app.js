@@ -58,7 +58,7 @@ input.addEventListener("keypress", (e) => {
 fetchWeather = async () => {
 	try {
 		const response = await fetch(
-			`http://api.weatherapi.com/v1/current.json?q=${input.value.trim()}&key=${API_KEY}`
+			`https://api.weatherapi.com/v1/current.json?q=${input.value.trim()}&key=${API_KEY}`
 		);
 		if (!response.ok) {
 			throw new Error(`HTTP error: ${response.status}`);
