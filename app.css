@@ -77,20 +77,26 @@ body {
 
 .search button {
 	padding: 10px 16px;
-	background-color: #1531c1;
+	background-color: #5fc7fa;
 	color: white;
-	border: 1px solid #1531c1;
-	border-left: 2px solid #1531c1;
+	border: 1px solid #5fc7fa;
+	border-left: 2px solid #5fc7fa;
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
 	cursor: pointer;
-	transition: background-color 0.2s ease-in-out;
+	transition: background-color 0.2s ease-in-out, border 0.25s ease-in-out,
+		border-left 0.25s ease-in-out;
 	font-weight: 700;
 	/* margin-left: 5px; Add margin to separate input and button */
 }
 
 .search button:active {
-	background-color: #3f55c2;
+	background-color: #88d7ff;
+}
+
+.search button:hover {
+	border: 1px solid #4093bd;
+	border-left: 2px solid #4093bd;
 }
 
 .results {

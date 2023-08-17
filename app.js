@@ -5,6 +5,7 @@ const search = document.querySelector(".search");
 const results = document.querySelector(".results");
 const boxes = document.querySelector(".Box");
 const API_KEY = "97170985aab34d44bcc63018231608";
+let isError = false;
 let spanText = "";
 
 const tempImg = document.createElement("img");
@@ -13,28 +14,35 @@ const precImg = document.createElement("img");
 const windImg = document.createElement("img");
 const imgArray = [tempImg, humidImg, precImg, windImg];
 
+input.value = "";
+
 imgArray.forEach((img) => {
 	img.className = "boxImg";
 });
 
 tempImg.src = "./images/thermometer.png";
 humidImg.src = "./images/humidity.png";
-precImg.src = "./images/precipitation.png";
+precImg.src = "./images/raining.png";
 windImg.src = "./images/wind.png";
 
 button.addEventListener("click", async () => {
 	if (input.value) {
+		isError = false; // Reset the flag before making a new request
 		const weather = await fetchWeather();
 		console.log(weather);
 		if (results.hasChildNodes()) {
 			deleteBoxes();
 		}
 		input.style.border = "";
-		renderBoxes();
+		if (!isError) {
+			renderBoxes(); // Only render boxes if there's no error
+		}
 		setSpans(weather);
 		setLocation(weather);
 	} else {
 		input.style.border = "1px solid red";
+		input.style.borderBottom = "2px solid red";
+		input.style.borderRight = "2px solid red";
 		if (results.hasChildNodes()) {
 			deleteBoxes();
 		}
@@ -58,7 +66,14 @@ fetchWeather = async () => {
 		const data = await response.json();
 		return data;
 	} catch (e) {
+		isError = true;
 		input.value = `Could not get weather data for this location`;
+		setTimeout(() => {
+			input.value = "";
+			if (results.hasChildNodes()) {
+				deleteBoxes();
+			}
+		}, 1500);
 	}
 };
 
@@ -114,6 +129,8 @@ deleteBoxes = () => {
 	while (results.firstChild) {
 		results.removeChild(results.firstChild);
 	}
+	const deletedH3 = document.querySelector("h3");
+	container.removeChild(deletedH3);
 };
 
 setSpans = (weather) => {
@@ -147,10 +164,14 @@ setSpans = (weather) => {
 };
 
 setLocation = (weather) => {
-	const h3 = document.createElement("h3");
-	h3.className = "location";
-	const region = weather.location.name;
-	const country = weather.location.country;
-	h3.innerText = `Weather in ${region}, ${country}`;
-	search.insertAdjacentElement("afterend", h3);
+	if (weather) {
+		const h3 = document.createElement("h3");
+		h3.className = "location";
+
+		const region = weather.location.name;
+		const country = weather.location.country;
+
+		h3.innerText = `Weather in ${region}, ${country}`;
+		search.insertAdjacentElement("afterend", h3);
+	}
 };
